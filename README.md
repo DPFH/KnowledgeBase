@@ -1,1 +1,3 @@
-# KnowledgeBase_Vue
+# KnowledgeBase
+
+Contains .NET project with Vue.js front end
