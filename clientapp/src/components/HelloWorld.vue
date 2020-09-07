@@ -5,7 +5,10 @@
             <p>
                 For current progress and plans, check out the
                 <a href="https://trello.com/b/wAvuoyNi/knowledge-base" target="_blank" rel="noopener">Trello board</a>.
-
+                Use 'taskkill -F -IM node.exe' if launching front-end through VS 2019 via another command line
+                after stopping within VS 2019 or localhost:8080 will still be bound to a running Vue.js instance. Otherwise,
+                if only running front-end via 'npm run serve' through command line, just use 'Ctrl+c' to stop server. Updates
+                to front-end hot reload, so no need to stop and restart every time files are changed/created to see changes.
             </p>
             <h4 class="text-left">Iteration 1 Plans</h4>
             <ul>
