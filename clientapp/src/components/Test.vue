@@ -1,24 +1,19 @@
 ﻿<template>
   <div>
-    <h1>Register</h1>
-
-    <input 
-      type = "email"
-      name = "email"
-      v-model = "email"
-      placeholder = "email"/>
-    
-    <input 
-      type = "password"
-      name = "password"
-      v-model = "password"
-      placeholder = "password"/>
-
-    <button @click = "register">Register</button>
+    <b-container fluid="lg">
+        <h1>Register</h1>
+    </b-container>
   </div>
 </template>
 
 <script>
+    import KnowledgeService from '@/services/KnowledgeService'
+
+    export default {
+        async mounted() {
+            await KnowledgeService.getKnowledgeItems()
+        }
+    }
 
 </script>
 
