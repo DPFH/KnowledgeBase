@@ -1,7 +1,7 @@
 ﻿<template>
   <div>
     <b-container fluid="lg">
-        <h1>Register</h1>
+        <h1>Knowledge Items</h1>
     </b-container>
   </div>
 </template>

@@ -29,18 +29,18 @@
                 including versions of Lorem Ipsum.
             </p>
         </b-container>
-        <Test/>
+        <KnowledgeItems/>
     </div>
 
 </template>
 
 <script>
-    import Test from "./Test"
+    import KnowledgeItems from "./KnowledgeItems"
 
     export default {
-        name: 'HelloWorld',
+        name: 'SplashHeader',
         components: {
-            Test
+            KnowledgeItems
         }
     }
 </script>
