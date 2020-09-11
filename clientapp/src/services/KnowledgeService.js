@@ -2,7 +2,7 @@
 
 export default {
     getKnowledgeItems() {
-        return Api().get('weatherforecast').then(function (response) {
+        return Api().get('knowledgeitem').then(function (response) {
             if (response.statusText === 'OK') {
                 console.log("api get successfully called")
                 console.log(JSON.stringify(response))
