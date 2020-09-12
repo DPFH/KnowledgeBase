@@ -12,8 +12,10 @@
     "bootstrap": "^4.5.2",
     "bootstrap-vue": "^2.16.0",
     "core-js": "^3.4.3",
+    "moment": "^2.27.0",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.5",
+    "vue-momentjs": "^1.0.0",
     "vue-router": "^3.4.3",
     "vuex": "^3.5.1"
   },

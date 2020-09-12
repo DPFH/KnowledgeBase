@@ -40,8 +40,8 @@ namespace KnowledgeBaseDPFH.Controllers
                 in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
                 and more recently with desktop publishing software like Aldus PageMaker
                 including versions of Lorem Ipsum.",
-                createdDate = DateTime.Now.AddDays(index),
-                editedDate = DateTime.Now.AddDays(index),
+                createdDate = DateTime.Now.ToString("MMMM dd, yyyy 'at' h:mm tt"),
+                editedDate = DateTime.Now.ToString("MMMM dd, yyyy 'at' h:mm tt"),
                 createdBy = "Admin",
                 editedBy = "Admin"
             })
@@ -57,8 +57,8 @@ namespace KnowledgeBaseDPFH.Controllers
                 id = 23,
                 title = "Specific Knowledge Item",
                 summary = "Ipsum lorem is simply dummy text of the printing and typesetting industry. Testing get/{id}.",
-                createdDate = DateTime.Now,
-                editedDate = DateTime.Now,
+                createdDate = DateTime.Now.ToString("MMMM dd, yyyy 'at' h:mm tt"),
+                editedDate = DateTime.Now.ToString("MMMM dd, yyyy 'at' h:mm tt"),
                 createdBy = "Admin",
                 editedBy = "Admin"
             };
