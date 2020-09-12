@@ -39,7 +39,11 @@ namespace KnowledgeBaseDPFH.Controllers
                 into electronic typesetting, remaining essentially unchanged. It was popularised
                 in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
                 and more recently with desktop publishing software like Aldus PageMaker
-                including versions of Lorem Ipsum."
+                including versions of Lorem Ipsum.",
+                createdDate = DateTime.Now.AddDays(index),
+                editedDate = DateTime.Now.AddDays(index),
+                createdBy = "Admin",
+                editedBy = "Admin"
             })
             .ToArray();
         }
@@ -52,7 +56,11 @@ namespace KnowledgeBaseDPFH.Controllers
             {
                 id = 23,
                 title = "Specific Knowledge Item",
-                summary = "Ipsum lorem is simply dummy text of the printing and typesetting industry. Testing get/{id}."
+                summary = "Ipsum lorem is simply dummy text of the printing and typesetting industry. Testing get/{id}.",
+                createdDate = DateTime.Now,
+                editedDate = DateTime.Now,
+                createdBy = "Admin",
+                editedBy = "Admin"
             };
 
             return theItem;
