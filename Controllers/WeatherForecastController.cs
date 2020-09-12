@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace KnowledgeBaseDPFH.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -23,7 +23,7 @@ namespace KnowledgeBaseDPFH.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("[controller]")]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();

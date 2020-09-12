@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace KnowledgeBaseDPFH.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("")]
     public class KnowledgeItemController : ControllerBase
     {
         private static readonly string[] Titles = new[]
@@ -24,7 +24,7 @@ namespace KnowledgeBaseDPFH.Controllers
         }
 
         // GET: ../KnowledgeItem
-        [HttpGet]
+        [HttpGet("[controller]s")]
         public ActionResult<IEnumerable<KnowledgeItem>> Get()
         {
             var rng = new Random();
@@ -38,7 +38,7 @@ namespace KnowledgeBaseDPFH.Controllers
         }
 
         // GET: ../KnowledgeItem/{id}
-        [HttpGet("{id}")]
+        [HttpGet("[controller]/{id}")]
         public ActionResult<KnowledgeItem> GetKnowledgeItem(long id)
         {
             KnowledgeItem theItem = new KnowledgeItem
