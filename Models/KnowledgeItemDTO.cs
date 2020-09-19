@@ -1,9 +1,7 @@
 namespace KnowledgeBaseDPFH
 {
-    public class KnowledgeItem
+    public class KnowledgeItemDTO
     {   
-        public long id { get; set; }
-
         public string title { get; set; }
 
         public string summary { get; set; }

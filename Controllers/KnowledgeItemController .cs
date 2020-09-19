@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Dapper;
@@ -25,9 +24,9 @@ namespace KnowledgeBaseDPFH.Controllers
 
         // GET: ../KnowledgeItem
         [HttpGet()]
-        public ActionResult<IEnumerable<KnowledgeItem>> Get()
+        public ActionResult<IEnumerable<KnowledgeItem>> GetAll()
         {
-            string sql = "Select * from knowledgeitems;";
+            string sql = "SELECT * FROM knowledgeitems;";
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
@@ -40,23 +39,53 @@ namespace KnowledgeBaseDPFH.Controllers
 
         // GET: ../KnowledgeItem/{id}
         [HttpGet("{id}")]
-        public ActionResult<KnowledgeItem> GetKnowledgeItem(long id)
+        public ActionResult<KnowledgeItem> Get(long id)
         {
-            //Debug.Print("ID is " + id);
             string sql = "SELECT * FROM knowledgeitems WHERE id = @searchId;";
             var parameters = new { searchId = id };
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
-                var results = connection.Query<KnowledgeItem>(sql, parameters).FirstOrDefault();
+                var result = connection.Query<KnowledgeItem>(sql, parameters).FirstOrDefault();
                 connection.Close();
 
-                if (results == null)
+                if (result == null)
                 {
                     return NotFound();
                 }
 
-                return results;
+                return result;
+            }
+        }
+
+        // POST: ../KnowledgeItem
+        [HttpPost()]
+        public ActionResult<KnowledgeItemDTO> Insert([FromBody] KnowledgeItemDTO knowledgeItem)
+        {
+            string sql = @"INSERT INTO knowledgeitems (title, summary, createdDate, editedDate, createdBy, editedBy)
+                         VALUES (@title, @summary, @createdDate, @editedDate, @createdBy, @editedBy)
+                         RETURNING id";
+            var parameters = new { 
+                title = knowledgeItem.title, 
+                summary = knowledgeItem.summary, 
+                createdDate = knowledgeItem.createdDate, 
+                editedDate = knowledgeItem.editedDate, 
+                createdBy = knowledgeItem.createdBy, 
+                editedBy = knowledgeItem.editedBy
+            };
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var result = connection.Query<KnowledgeItem>(sql, parameters).FirstOrDefault();
+                connection.Close();
+
+                if (result == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(result.id);
             }
         }
     }
