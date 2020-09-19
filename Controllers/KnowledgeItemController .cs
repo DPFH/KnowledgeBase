@@ -11,7 +11,7 @@ using System.Diagnostics;
 namespace KnowledgeBaseDPFH.Controllers
 {
     [ApiController]
-    [Route("")]
+    [Route("[controller]")]
     public class KnowledgeItemController : ControllerBase
     {
         private static readonly string connectionString = "Host=database-1.cx7ddt0hgocb.us-east-2.rds.amazonaws.com;Port=5432;Username=postgres;Password=password;Database=myDatabase";
@@ -24,10 +24,10 @@ namespace KnowledgeBaseDPFH.Controllers
         }
 
         // GET: ../KnowledgeItem
-        [HttpGet("[controller]s")]
+        [HttpGet()]
         public ActionResult<IEnumerable<KnowledgeItem>> Get()
         {
-            string sql = "Select * from public.knowledgeitems;";
+            string sql = "Select * from knowledgeitems;";
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
@@ -39,14 +39,16 @@ namespace KnowledgeBaseDPFH.Controllers
         }
 
         // GET: ../KnowledgeItem/{id}
-        [HttpGet("[controller]/{id}")]
+        [HttpGet("{id}")]
         public ActionResult<KnowledgeItem> GetKnowledgeItem(long id)
         {
-            //string sql = "Select * from public.knowledgeitems;";
+            //Debug.Print("ID is " + id);
+            string sql = "SELECT * FROM knowledgeitems WHERE id = @searchId;";
+            var parameters = new { searchId = id };
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
-                var results = connection.Query<KnowledgeItem>("SELECT * FROM public.knowledgeitems WHERE createdby = @createdby;", new { createdby = "DJ Khaled" }).FirstOrDefault();
+                var results = connection.Query<KnowledgeItem>(sql, parameters).FirstOrDefault();
                 connection.Close();
 
                 if (results == null)
