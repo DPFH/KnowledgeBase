@@ -85,7 +85,28 @@ namespace KnowledgeBaseDPFH.Controllers
                     return BadRequest();
                 }
 
-                return Ok(result.id);
+                return Ok(new { id = result.id});
+            }
+        }
+
+        // DELETE: ../KnowledgeItem/{id}
+        [HttpDelete("{id}")]
+        public ActionResult<KnowledgeItem> Delete(long id)
+        {
+            string sql = "DELETE FROM knowledgeitems WHERE id = @deleteId RETURNING id;"; 
+             var parameters = new { deleteId = id };
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var result = connection.Query<KnowledgeItem>(sql, parameters).FirstOrDefault();
+                connection.Close();
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
             }
         }
     }
