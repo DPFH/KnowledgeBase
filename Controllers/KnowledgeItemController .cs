@@ -94,7 +94,39 @@ namespace KnowledgeBaseDPFH.Controllers
         public ActionResult<KnowledgeItem> Delete(long id)
         {
             string sql = "DELETE FROM knowledgeitems WHERE id = @deleteId RETURNING id;"; 
-             var parameters = new { deleteId = id };
+            var parameters = new { deleteId = id };
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var result = connection.Query<KnowledgeItem>(sql, parameters).FirstOrDefault();
+                connection.Close();
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
+            }
+        }
+
+        // PUT: ../KnowledgeItem/{id}
+        [HttpPut("{id}")]
+        public ActionResult<KnowledgeItem> Update(long id, [FromBody] KnowledgeItemDTO knowledgeItem)
+        {
+            string sql = @"UPDATE knowledgeitems
+                         SET title = @title, summary = @summary, editedDate = @editedDate, editedBy = @editedBy
+                         WHERE id = @updateId
+                         RETURNING id";
+            var parameters = new
+            {
+                updateId = id,
+                title = knowledgeItem.title,
+                summary = knowledgeItem.summary,
+                editedDate = knowledgeItem.editedDate,
+                editedBy = knowledgeItem.editedBy
+            };
+
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
