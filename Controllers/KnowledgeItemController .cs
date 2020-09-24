@@ -64,7 +64,7 @@ namespace KnowledgeBaseDPFH.Controllers
         {
             string sql = @"INSERT INTO knowledgeitems (title, summary, createdDate, editedDate, createdBy, editedBy)
                          VALUES (@title, @summary, @createdDate, @editedDate, @createdBy, @editedBy)
-                         RETURNING id";
+                         RETURNING *";
             var parameters = new { 
                 title = knowledgeItem.title, 
                 summary = knowledgeItem.summary, 
@@ -85,7 +85,7 @@ namespace KnowledgeBaseDPFH.Controllers
                     return BadRequest();
                 }
 
-                return Ok(new { id = result.id});
+                return Ok(result);
             }
         }
 
