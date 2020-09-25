@@ -65,8 +65,22 @@
               <div v-for="knowledgeItem in this.knowledgeItemList" v-bind:key="knowledgeItem.id" class="ItemBorder">
                   <h4>{{knowledgeItem.title}} (id = {{knowledgeItem.id}})</h4>
                   <p class="mb-3">{{knowledgeItem.summary}}</p>
-                  <p class="KIfooterStamp">Created by {{knowledgeItem.createdBy}} on {{knowledgeItem.createdDate}}</p>
-                  <p class="KIfooterStamp">Last edited by {{knowledgeItem.editedBy}} on {{knowledgeItem.editedDate}}</p>
+                  <b-row class="pb-1">
+                      <b-col>
+                          <b-button variant="danger" id="deleteBtn" @click="deleteKnowledgeItem(knowledgeItem.id)">Delete</b-button>
+                      </b-col>
+                      <b-col>
+                          <p class="KIfooterStamp">Created by {{knowledgeItem.createdBy}} on {{knowledgeItem.createdDate}}</p>
+                      </b-col>
+                  </b-row>
+                  <b-row>
+                      <b-col>
+                          <b-button variant="secondary" id="deleteBtn">Edit</b-button>
+                      </b-col>
+                      <b-col>
+                          <p class="KIfooterStamp">Last edited by {{knowledgeItem.editedBy}} on {{knowledgeItem.editedDate}}</p>
+                      </b-col>
+                  </b-row>
               </div>
           </div>
       </b-container>
@@ -129,13 +143,20 @@
                     console.log(error)
                 }
             },
+            async deleteKnowledgeItem(id) {
+                try {
+                    await KnowledgeService.deleteKnowledgeItem(id)
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            },
             handleSubmit() {
                 // Exit when the form isn't valid
                 if (!this.checkFormValidity()) {
                     return
                 }
                 // Push the name to submitted names
-                console.log(this.title)
                 this.createKnowledgeItem()
                 // Hide the modal manually
                 this.$nextTick(() => {
