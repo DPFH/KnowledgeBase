@@ -117,7 +117,7 @@ namespace KnowledgeBaseDPFH.Controllers
             string sql = @"UPDATE knowledgeitems
                          SET title = @title, summary = @summary, editedDate = @editedDate, editedBy = @editedBy
                          WHERE id = @updateId
-                         RETURNING id";
+                         RETURNING *";
             var parameters = new
             {
                 updateId = id,
@@ -138,7 +138,7 @@ namespace KnowledgeBaseDPFH.Controllers
                     return NotFound();
                 }
 
-                return NoContent();
+                return Ok(result);
             }
         }
     }

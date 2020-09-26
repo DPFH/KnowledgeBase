@@ -9,3 +9,7 @@ export function addKnowledgeToList({ commit }, newKnowledgeItem) {
 export function deleteKnowledgeFromList({ commit }, deleteId) {
     return commit('deleteKnowledgeFromList', deleteId)
 }
+
+export function editKnowledgeFromList({ commit }, knowledgeItem) {
+    return commit('editKnowledgeFromList', knowledgeItem)
+}

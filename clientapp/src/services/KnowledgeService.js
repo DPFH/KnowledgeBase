@@ -19,7 +19,6 @@ export default {
             if (response.statusText === 'OK') {
                 console.log("api create successfully called")
                 //console.log(JSON.stringify(response))
-                
                 store.commit("addKnowledgeToList", response.data)
             }
         }).catch(function (error) {
@@ -32,6 +31,17 @@ export default {
                 console.log("api delete successfully called")
                 //console.log(JSON.stringify(response))
                 store.commit("deleteKnowledgeFromList", id)
+            }
+        }).catch(function (error) {
+            console.log(error)
+        })
+    },
+    editKnowledgeItem(data) {
+        return Api().put('knowledgeitem/' + data.id, data).then(function (response) {
+            if (response.statusText === 'OK') {
+                console.log("api edit successfully called")
+                //console.log(JSON.stringify(response))
+                store.commit("editKnowledgeFromList", response.data)
             }
         }).catch(function (error) {
             console.log(error)
