@@ -7,9 +7,9 @@
                    size="lg"
                    @show="resetModal"
                    @hidden="resetModal"
-                   @ok="handleOk"
+                   @ok="handleCreateOk"
                    title="Create Knowledge Item Form">
-              <b-form ref="form" @submit.stop.prevent="handleSubmit">
+              <b-form ref="createForm" @submit.stop.prevent="handleCreateSubmit">
                   <b-form-group id="input-group-title"
                                 invalid-feedback="Title is required"
                                 label="Title:"
@@ -27,12 +27,12 @@
                                 label="Summary:"
                                 label-for="summary-input">
                       <b-form-textarea id="summary-input"
-                                    v-model="summary"
-                                    :state="summaryState"
-                                    type="text"
-                                    required
-                                    placeholder="Enter summary"
-                                    :rows="5">
+                                       v-model="summary"
+                                       :state="summaryState"
+                                       type="text"
+                                       required
+                                       placeholder="Enter summary"
+                                       :rows="5">
                       </b-form-textarea>
                   </b-form-group>
                   <b-form-group id="input-group-createdDate"
@@ -40,8 +40,8 @@
                                 label="Date Created:"
                                 label-for="created-date-input">
                       <b-form-input id="created-date-input"
-                                    v-model="createdDate"
-                                    :state="createdDateState"
+                                    v-model="date"
+                                    :state="dateState"
                                     type="text"
                                     required
                                     placeholder="Enter date created">
@@ -52,8 +52,8 @@
                                 label="Created By:"
                                 label-for="created-by-input">
                       <b-form-input id="created-by-input"
-                                    v-model="createdBy"
-                                    :state="createdByState"
+                                    v-model="author"
+                                    :state="authorState"
                                     type="text"
                                     required
                                     placeholder="Enter name of creator">
@@ -61,8 +61,65 @@
                   </b-form-group>
               </b-form>
           </b-modal>
+          <b-modal id="edit-modal"
+                   size="lg"
+                   @hidden="resetModal"
+                   @ok="handleEditOk"
+                   title="Edit Knowledge Item Form">
+              <b-form ref="editForm" @submit.stop.prevent="handleEditSubmit">
+                  <b-form-group id="input-group-title"
+                                invalid-feedback="Title is required"
+                                label="New Title:"
+                                label-for="edited-title-input">
+                      <b-form-input id="edited-title-input"
+                                    v-model="title"
+                                    :state="titleState"
+                                    type="text"
+                                    required
+                                    placeholder="Enter edited title">
+                      </b-form-input>
+                  </b-form-group>
+                  <b-form-group id="input-group-summary"
+                                invalid-feedback="Summary is required"
+                                label="New Summary:"
+                                label-for="edited-summary-input">
+                      <b-form-textarea id="edited-summary-input"
+                                       v-model="summary"
+                                       :state="summaryState"
+                                       type="text"
+                                       required
+                                       placeholder="Enter edited summary"
+                                       :rows="6">
+                      </b-form-textarea>
+                  </b-form-group>
+                  <b-form-group id="input-group-editedDate"
+                                invalid-feedback="Date created is required"
+                                label="Date Edited:"
+                                label-for="edited-date-input">
+                      <b-form-input id="edited-date-input"
+                                    v-model="date"
+                                    :state="dateState"
+                                    type="text"
+                                    required
+                                    placeholder="Enter date edited">
+                      </b-form-input>
+                  </b-form-group>
+                  <b-form-group id="input-group-editedBy"
+                                invalid-feedback="Editor name is required"
+                                label="Edited By:"
+                                label-for="edited-by-input">
+                      <b-form-input id="edited-by-input"
+                                    v-model="author"
+                                    :state="authorState"
+                                    type="text"
+                                    required
+                                    placeholder="Enter name of editor">
+                      </b-form-input>
+                  </b-form-group>
+              </b-form>
+          </b-modal>
           <div id="mess-list" v-if="this.knowledgeItemList">
-              <div v-for="knowledgeItem in this.knowledgeItemList" v-bind:key="knowledgeItem.id" class="ItemBorder">
+              <div v-for="knowledgeItem in this.knowledgeItemList" :key="knowledgeItem.id" class="ItemBorder">
                   <h4>{{knowledgeItem.title}} (id = {{knowledgeItem.id}})</h4>
                   <p class="mb-3">{{knowledgeItem.summary}}</p>
                   <b-row class="pb-1">
@@ -75,7 +132,7 @@
                   </b-row>
                   <b-row>
                       <b-col>
-                          <b-button variant="secondary" id="deleteBtn">Edit</b-button>
+                          <b-button variant="secondary" id="editBtn" v-b-modal.edit-modal @click="preFillModal(knowledgeItem)">Edit</b-button>
                       </b-col>
                       <b-col>
                           <p class="KIfooterStamp">Last edited by {{knowledgeItem.editedBy}} on {{knowledgeItem.editedDate}}</p>
@@ -96,49 +153,86 @@
             return {
                 title: '',
                 summary: '',
-                createdDate: '',
-                createdBy: '',
+                date: '',
+                author: '',
+                editId: -1,
                 titleState: null,
                 summaryState: null,
-                createdDateState: null,
-                createdByState: null
+                dateState: null,
+                authorState: null
             }
         },
         methods: {
             resetModal() {
                 this.title = '',
                 this.summary = '',
-                this.createdDate = '',
-                this.createdBy = '',
+                this.date = '',
+                this.author = '',
+                this.editId = -1,
                 this.titleState = null,
                 this.summaryState = null,
-                this.createdDateState = null,
-                this. createdByState = null
+                this.dateState = null,
+                this.authorState = null
             },
-            checkFormValidity() {
-                const valid = this.$refs.form.checkValidity()
+            preFillModal(knowledgeItem) {
+                this.editId = knowledgeItem.id,
+                this.title = knowledgeItem.title,
+                this.summary = knowledgeItem.summary
+            },
+            checkFormValidity(isBeingEdited) {
+                var valid
+
+                if (isBeingEdited) {
+                    valid = this.$refs.editForm.checkValidity()
+                    if (this.editId == -1) {
+                        valid = false
+                    }
+                } else {
+                    valid = this.$refs.createForm.checkValidity()
+                }
+                
                 this.titleState = this.title.length == 0 ? false : true
                 this.summaryState = this.summary.length == 0 ? false : true
-                this.createdDateState = this.createdDate.length == 0 ? false : true
-                this.createdByState = this.createdBy.length == 0 ? false : true
+                this.dateState = this.date.length == 0 ? false : true
+                this.authorState = this.author.length == 0 ? false : true
+                console.log(valid)
                 return valid
             },
-            handleOk(bvModalEvt) {
+            handleCreateOk(bvModalEvt) {
                 bvModalEvt.preventDefault()
-                this.handleSubmit()
+                this.handleCreateSubmit()
+            },
+            handleEditOk(bvModalEvt) {
+                bvModalEvt.preventDefault()
+                this.handleEditSubmit()
             },
             async createKnowledgeItem() {
                 var obj = {
                     title: this.title,
                     summary: this.summary,
-                    createdDate: this.createdDate,
-                    editedDate: this.createdDate,
-                    createdBy: this.createdBy,
-                    editedBy: this.createdBy
+                    createdDate: this.date,
+                    editedDate: this.date,
+                    createdBy: this.author,
+                    editedBy: this.author
                 }
 
                 try {
                     await KnowledgeService.addKnowledgeItem(obj)
+                } catch (error) {
+                    console.log(error)
+                }
+            },
+            async editKnowledgeItem() {
+                var obj = {
+                    id: this.editId,
+                    title: this.title,
+                    summary: this.summary,
+                    editedDate: this.date,
+                    editedBy: this.author
+                }
+
+                try {
+                    await KnowledgeService.editKnowledgeItem(obj)
                 } catch (error) {
                     console.log(error)
                 }
@@ -151,9 +245,9 @@
                     console.log(error)
                 }
             },
-            handleSubmit() {
+            handleCreateSubmit() {
                 // Exit when the form isn't valid
-                if (!this.checkFormValidity()) {
+                if (!this.checkFormValidity(false)) {
                     return
                 }
                 // Push the name to submitted names
@@ -161,6 +255,18 @@
                 // Hide the modal manually
                 this.$nextTick(() => {
                     this.$bvModal.hide('create-modal')
+                })
+            },
+            handleEditSubmit() {
+                // Exit when the form isn't valid
+                if (!this.checkFormValidity(true)) {
+                    return
+                }
+                // Push the name to submitted names
+                this.editKnowledgeItem()
+                // Hide the modal manually
+                this.$nextTick(() => {
+                    this.$bvModal.hide('edit-modal')
                 })
             }
         },
