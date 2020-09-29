@@ -10,13 +10,12 @@
                 if only running front-end via 'npm run serve' through command line, just use 'Ctrl+c' to stop server. Updates
                 to front-end hot reload, so no need to stop and restart every time files are changed/created to see changes.
             </p>
-            <h4 class="text-left">Iteration 1 Plans</h4>
+            <h4 class="text-left">Iteration 2 Plans</h4>
             <ul>
-                <li>Create a home page</li>
-                <li>Create REST endpoints in .NET part of application and send sample JSON back</li>
-                <li>Create front-end tabs/drop-downs that render the JSON</li>
-                <li>Hook up back end to PostgreSQL</li>
-                <li>deploy a PostgreSQL server on AWS</li>
+                <li>Replace back-end with Django Rest Framework</li>
+                <li>Migrate into separate repositories for Vue 2 and Django Rest Framework</li>
+                <li>Use proper dates with PostgreSQL and back-end</li>
+                <li>Use Docker and Kubernetes and deploy on AWS</li>
             </ul>
         </b-container>
         <KnowledgeItems/>

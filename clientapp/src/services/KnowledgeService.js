@@ -7,7 +7,6 @@ export default {
             if (response.statusText === 'OK') {
                 console.log("api get successfully called")
                 //console.log(JSON.stringify(response))
-
                 store.commit("getKnowledgeItemList", response.data)
             }
         }).catch(function (error) {

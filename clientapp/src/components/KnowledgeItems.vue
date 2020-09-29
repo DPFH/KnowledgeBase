@@ -120,7 +120,7 @@
           </b-modal>
           <div id="mess-list" v-if="this.knowledgeItemList">
               <div v-for="knowledgeItem in this.knowledgeItemList" :key="knowledgeItem.id" class="ItemBorder">
-                  <h4>{{knowledgeItem.title}} (id = {{knowledgeItem.id}})</h4>
+                  <h4>{{knowledgeItem.title}}</h4>
                   <p class="mb-3">{{knowledgeItem.summary}}</p>
                   <b-row class="pb-1">
                       <b-col>
@@ -195,7 +195,8 @@
                 this.summaryState = this.summary.length == 0 ? false : true
                 this.dateState = this.date.length == 0 ? false : true
                 this.authorState = this.author.length == 0 ? false : true
-                console.log(valid)
+
+                console.log("Form validation: "+valid)
                 return valid
             },
             handleCreateOk(bvModalEvt) {
@@ -205,6 +206,30 @@
             handleEditOk(bvModalEvt) {
                 bvModalEvt.preventDefault()
                 this.handleEditSubmit()
+            },
+            handleCreateSubmit() {
+                // Exit when the form isn't valid
+                if (!this.checkFormValidity(false)) {
+                    return
+                }
+                // Call create and push new item to store
+                this.createKnowledgeItem()
+                // Hide the modal manually
+                this.$nextTick(() => {
+                    this.$bvModal.hide('create-modal')
+                })
+            },
+            handleEditSubmit() {
+                // Exit when the form isn't valid
+                if (!this.checkFormValidity(true)) {
+                    return
+                }
+                // Call update and push changes to store
+                this.editKnowledgeItem()
+                // Hide the modal manually
+                this.$nextTick(() => {
+                    this.$bvModal.hide('edit-modal')
+                })
             },
             async createKnowledgeItem() {
                 var obj = {
@@ -244,30 +269,6 @@
                 catch (error) {
                     console.log(error)
                 }
-            },
-            handleCreateSubmit() {
-                // Exit when the form isn't valid
-                if (!this.checkFormValidity(false)) {
-                    return
-                }
-                // Push the name to submitted names
-                this.createKnowledgeItem()
-                // Hide the modal manually
-                this.$nextTick(() => {
-                    this.$bvModal.hide('create-modal')
-                })
-            },
-            handleEditSubmit() {
-                // Exit when the form isn't valid
-                if (!this.checkFormValidity(true)) {
-                    return
-                }
-                // Push the name to submitted names
-                this.editKnowledgeItem()
-                // Hide the modal manually
-                this.$nextTick(() => {
-                    this.$bvModal.hide('edit-modal')
-                })
             }
         },
         async mounted() {

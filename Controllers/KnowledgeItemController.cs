@@ -26,7 +26,7 @@ namespace KnowledgeBaseDPFH.Controllers
         [HttpGet()]
         public ActionResult<IEnumerable<KnowledgeItem>> GetAll()
         {
-            string sql = "SELECT * FROM knowledgeitems;";
+            string sql = "SELECT * FROM knowledgeitems ORDER BY id ASC;";
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
