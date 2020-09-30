@@ -121,7 +121,7 @@
           <div id="mess-list" v-if="this.knowledgeItemList">
               <div v-for="knowledgeItem in this.knowledgeItemList" :key="knowledgeItem.id" class="ItemBorder">
                   <h4>{{knowledgeItem.title}}</h4>
-                  <p class="mb-3">{{knowledgeItem.summary}}</p>
+                  <p class="mb-1">{{knowledgeItem.summary}}</p>
                   <b-row class="pb-1">
                       <b-col>
                           <b-button variant="danger" id="deleteBtn" @click="deleteKnowledgeItem(knowledgeItem.id)">Delete</b-button>
