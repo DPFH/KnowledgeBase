@@ -1,0 +1,46 @@
+CREATE TABLE knowledgeItems (
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(255) NOT NULL,
+	summary VARCHAR(4000),
+	createdDate VARCHAR (255) NOT NULL,
+	editedDate VARCHAR (255),
+	createdBy VARCHAR (255) NOT NULL,
+  editedBy VARCHAR (255)
+);
+
+
+DROP TABLE IF EXISTS knowledgeItems;
+
+
+SELECT * FROM knowledgeitems ORDER BY id ASC;
+
+
+SELECT * FROM knowledgeitems WHERE id = 1;
+
+
+INSERT INTO knowledgeitems (title, summary, createdDate, editedDate, createdBy, editedBy)
+VALUES('My First Item',
+  'Lorem Ipsum is simply dummy text of the printing and typesetting industry. '
+  'Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s, '
+  'when an unknown printer took a galley of type and scrambled it to make a '
+  'type specimen book. It has survived not only five centuries, but also the leap '
+  'into electronic typesetting, remaining essentially unchanged. It was popularised '
+  'in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, '
+  'and more recently with desktop publishing software like Aldus PageMaker '
+  'including versions of Lorem Ipsum.',
+  'September 14, 2020 at 3:30 PM','September 14, 2020 at 3:30 PM','Admin','Admin'
+ )
+RETURNING *;
+
+
+DELETE FROM knowledgeitems WHERE id = 1 RETURNING id;
+
+
+UPDATE knowledgeitems
+SET title = 'Updated Title',
+summary = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. '
+  'Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s. ',
+editedDate = 'September 20, 2020 at 12:57 AM', 
+editedBy = 'Editor'
+WHERE id = 1
+RETURNING *;
